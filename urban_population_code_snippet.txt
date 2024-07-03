@@ -1,0 +1,34 @@
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+data = pd.read_csv('path_to_urban_population_data.csv')
+
+# Data Cleaning
+data['Population'] = data['Population'].fillna(data['Population'].mean())
+
+# Line Graph: Annual Population Growth Trends
+plt.figure(figsize=(10, 5))
+for city in data['City'].unique():
+    city_data = data[data['City'] == city]
+    plt.plot(city_data['Year'], city_data['Population'], label=city)
+plt.xlabel('Year')
+plt.ylabel('Population')
+plt.title('Urban Population Growth Trends (1960-2020)')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Bar Chart: Population Growth Rates Across Different Regions
+regions = data['Region'].unique()
+growth_rates = [data[data['Region'] == region]['Population'].pct_change().mean() for region in regions]
+
+plt.figure(figsize=(10, 5))
+plt.bar(regions, growth_rates, color='blue')
+plt.xlabel('Region')
+plt.ylabel('Average Growth Rate')
+plt.title('Population Growth Rates Across Different Regions')
+plt.show()
